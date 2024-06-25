@@ -54,19 +54,26 @@ const displayWainwrights = (wainwrights) => {
 }
 
 const handleFormSubmit = (event) => {
-    event.preventDefault();
+    event.preventDefault(); 
     const searchInput = document.getElementById("searchInput").value.trim().toLowerCase();
     console.log("Search Input:", searchInput);
     filterWainwrights(searchInput); 
 }
 
 const filterWainwrights = (word) => {
-    const filteredWainwrights = data.filter(wainwright => 
-        wainwright.name.toLowerCase().includes(word));
+    console.log(word);
+    if (word === "" || word.length < 1){
+        displayWainwrights(data); 
+    } else{
+        const filteredWainwrights = data.filter(wainwright => 
+            wainwright.name.toLowerCase().includes(word));
+        
+        displayWainwrights(filteredWainwrights); 
+    }
     
-    displayWainwrights(filteredWainwrights); 
 }
 
-document.getElementById("searchForm"). addEventListener('submit', handleFormSubmit)
+document.getElementById("searchForm").addEventListener('submit', handleFormSubmit); 
+// document.getElementById("searchInput").addEventListener('change', handleFormSubmit); 
 
 fetchDataAndDisplay(); 
