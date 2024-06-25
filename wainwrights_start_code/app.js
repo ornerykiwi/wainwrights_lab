@@ -5,7 +5,7 @@ let data = [];
 const getAllWainwrights = async () => {
     const response = await fetch('https://raw.githubusercontent.com/annahndr/annahndr.github.io/master/wainwrights_data/wainwrights.json'); 
     data = await response.json();
-    return data.results; 
+    return data; 
 }
 
 const fetchDataAndDisplay = async () => {
@@ -17,31 +17,7 @@ const fetchDataAndDisplay = async () => {
         console.log(data);
     
         //display Wainwright information
-        const wainwrightsContainer = document.getElementById("wainwrightsContainer"); 
-
-        data.forEach((wainwright) => {
-
-            //create new ul element for each wainwright
-            const wainwrightsList = document.createElement("ul"); 
-
-            //create list items
-            const wainwrightName = document.createElement("li");
-            wainwrightName.innerText = `Name: ${wainwright.name}`; 
-            wainwrightsList.appendChild(wainwrightName);
-
-            const wainwrightHeight = document.createElement("li");
-            wainwrightHeight.innerText = `Height: ${wainwright.heightMetres}`
-            wainwrightsList.appendChild(wainwrightHeight); 
-
-            const wainwrightArea = document.createElement("li");
-            wainwrightArea.innerText = `Area: ${wainwright.area}`;
-            wainwrightsList.appendChild(wainwrightArea);
-
-            // add the new ul to the wainright container
-            wainwrightsContainer.appendChild(wainwrightsList)
-
-        })
-
+        displayWainwrights(data);
     } catch(error) {
         console.error('Error fetching data: ', error); 
     }
@@ -53,26 +29,44 @@ const fetchDataAndDisplay = async () => {
 
 const displayWainwrights = (wainwrights) => {
     const wainwrightsContainer = document.getElementById("wainwrights-list");
-    wainwrightsContainer.innerHTML = ""; // to clear the existing content
+    wainwrightsContainer.innerHTML = ""; // Clear existing content
 
-    data.forEach(wainwright => {
+    wainwrights.forEach(wainwright => {
+         //create new ul element for each wainwright
+        const wainwrightsList = document.createElement("ul");
 
-        const filteredList = document.createElement("ul"); 
-        
-        const filteredName = document.createElement("li");
-        filteredName.innerText = `Name: ${wainwright.name}`; 
-        filteredList.appendChild(filteredName);
+        //create list items
+        const wainwrightName = document.createElement("li");
+        wainwrightName.innerHTML = `<strong>Name:</strong> ${wainwright.name}`;
+        wainwrightsList.appendChild(wainwrightName);
 
-            const filteredHeight = document.createElement("li");
-            filteredHeight.innerText = `Height: ${wainwright.heightMetres}`
-            filteredList.appendChild(filteredHeight); 
+        const wainwrightHeight = document.createElement("li");
+        wainwrightHeight.innerText = `Height: ${wainwright.heightMetres}`;
+        wainwrightsList.appendChild(wainwrightHeight);
 
-            const filteredArea = document.createElement("li");
-            filteredArea.innerText = `Area: ${wainwright.area}`;
-            filteredList.appendChild(filteredArea);
+        const wainwrightArea = document.createElement("li");
+        wainwrightArea.innerText = `Area: ${wainwright.area.areaName}`;
+        wainwrightsList.appendChild(wainwrightArea);
 
-            wainwrightsContainer.appendChild(filteredList)
-    })
-
+        // add the new ul to the wainright container
+        wainwrightsContainer.appendChild(wainwrightsList);
+    });
 }
+
+const handleFormSubmit = (event) => {
+    event.preventDefault();
+    const searchInput = document.getElementById("searchInput").value.trim().toLowerCase();
+    console.log("Search Input:", searchInput);
+    filterWainwrights(searchInput); 
+}
+
+const filterWainwrights = (word) => {
+    const filteredWainwrights = data.filter(wainwright => 
+        wainwright.name.toLowerCase().includes(word));
+    
+    displayWainwrights(filteredWainwrights); 
+}
+
+document.getElementById("searchForm"). addEventListener('submit', handleFormSubmit)
+
 fetchDataAndDisplay(); 
