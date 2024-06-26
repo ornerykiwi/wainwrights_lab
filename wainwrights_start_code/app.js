@@ -33,18 +33,18 @@ const displayWainwrights = (wainwrights) => {
 
     wainwrights.forEach(wainwright => {
          //create new ul element for each wainwright
-        const wainwrightsList = document.createElement("ul");
+        const wainwrightsList = document.createElement("li");
 
         //create list items
-        const wainwrightName = document.createElement("li");
+        const wainwrightName = document.createElement("h2");
         wainwrightName.innerHTML = `<strong>Name:</strong> ${wainwright.name}`;
         wainwrightsList.appendChild(wainwrightName);
 
-        const wainwrightHeight = document.createElement("li");
+        const wainwrightHeight = document.createElement("h3");
         wainwrightHeight.innerText = `Height: ${wainwright.heightMetres}`;
         wainwrightsList.appendChild(wainwrightHeight);
 
-        const wainwrightArea = document.createElement("li");
+        const wainwrightArea = document.createElement("h4");
         wainwrightArea.innerText = `Area: ${wainwright.area.areaName}`;
         wainwrightsList.appendChild(wainwrightArea);
 
